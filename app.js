@@ -1,8 +1,9 @@
 const { App } = require('@slack/bolt');
+require('dotenv').config();
 
 const app = new App ({
-    token: 'xoxb-5682548999299-5736544765280-Eqq0pDfcaH1TQ5XtTujXyqJ2',
-    signingSecret: '51dbb851fed8f75e43cd14f260d9a3aa',
+    token: process.env.SLACK_BOT_TOKEN,
+    signingSecret: process.env.SLACK_SIGNING_SECRET,
 });
 
 app.message('hello', async ({ message, say }) => {
