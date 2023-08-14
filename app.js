@@ -15,9 +15,13 @@ app.message('hello', async ({ message, say }) => {
     await say(`Hello, <@${message.user}>! The positivity quote of the day is: Keep your face always toward the sunshine, and shadows will fall behind you.`);
   });
   
+//Greeting response
+  app.message('how are you?', async ({ message, say }) => {
+    await say(`I am doing great! Thank you for asking. :)`);
+  });
+
 //Response to a knock knock joke
-app.event('app_mention', async ({ event, say }) => {
-    if (event.text.toLowerCase().includes('knock knock')) {
+app.message('knock knock', async ({ message, say }) => {
         await say({
             blocks: [
                 {
@@ -37,7 +41,7 @@ app.event('app_mention', async ({ event, say }) => {
             ],
         });
     }
-});
+);
 
 //changing kelvins to fahrenehit, giving weather
 function kelvinToFahrenheit(kelvin) {
@@ -80,7 +84,7 @@ function kelvinToFahrenheit(kelvin) {
     }
   }
   
-  app.message('Give me a positive affirmation', async ({ say }) => {
+  app.message('give me an affirmation', async ({ say }) => {
     const compliment = await getCompliment();
     await say(compliment);
   });
@@ -118,8 +122,3 @@ app.message(async ({ message, say }) => {
     console.log('Bolt app is running!');
 })();
 
-//"Eat your favorite food! I personally love pizza, tacos, and sushi.",
-//"Go for a walk while listening to your favorite music",
-//"Watch your comfort Netflix show! I love Gilmore Girls.",
-//"Practice gratitude by writing down three things you're thankful for.",
-//"Grab boba or a coffee with a close friend!",
