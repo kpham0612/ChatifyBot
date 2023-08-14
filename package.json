@@ -124,6 +124,7 @@
     "sax": "^1.2.4",
     "semver": "^7.5.4",
     "send": "^0.18.0",
+    "sentiment": "^5.0.2",
     "serve-static": "^1.15.0",
     "setprototypeof": "^1.2.0",
     "side-channel": "^1.0.4",

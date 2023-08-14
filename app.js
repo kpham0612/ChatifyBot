@@ -1,4 +1,5 @@
 const { App } = require('@slack/bolt');
+const Sentiment = require('sentiment');
 const axios = require('axios');
 require('dotenv').config();
 
@@ -75,7 +76,7 @@ function kelvinToFahrenheit(kelvin) {
       return response.data.affirmation;
     } catch (error) {
       console.error('Error fetching compliment:', error);
-      return 'You are awesome!'; // Default compliment
+      return 'Please try again!'; 
     }
   }
   
@@ -84,8 +85,41 @@ function kelvinToFahrenheit(kelvin) {
     await say(compliment);
   });
 
+//NLP sentimentanalyzer, gives list of things to improve mood
+const sentimentAnalyzer = new Sentiment();
+
+const happinessSuggestions = [
+  "Eat your favorite food! I personally love pizza, tacos, and sushi.",
+  "Go for a walk while listening to your favorite music! I enjoy Clairo.",
+  "Watch your comfort Netflix show! I love Gilmore Girls.",
+  "Practice gratitude by writing down three things you're thankful for.",
+  "Grab boba or a coffee with a close friend! I recommend Tastea.",
+];
+
+app.message(async ({ message, say }) => {
+  const sentimentScore = sentimentAnalyzer.analyze(message.text).score;
+
+  if (sentimentScore < 0) {
+    const allSuggestions = happinessSuggestions.join('\n');
+    await say(`Happiness is an important factor for a fulfilling life. Please consider doing these activities to boost your mood: \n${allSuggestions}`);
+  }
+  else if (sentimentScore > 0) {
+    const positiveResponse = [
+        "I am happy to see you happy!",
+        "Sounds great! I am happy to hear that.",
+    ];
+    const randomPositiveResponse = positiveResponse[Math.floor(Math.random() * positiveResponse.length)];
+    await say(randomPositiveResponse);
+  }
+});
 
 (async () => {
     await app.start(process.env.PORT || 3000);
     console.log('Bolt app is running!');
 })();
+
+//"Eat your favorite food! I personally love pizza, tacos, and sushi.",
+//"Go for a walk while listening to your favorite music",
+//"Watch your comfort Netflix show! I love Gilmore Girls.",
+//"Practice gratitude by writing down three things you're thankful for.",
+//"Grab boba or a coffee with a close friend!",
