@@ -20,6 +20,19 @@ app.message('hello', async ({ message, say }) => {
     await say(`I am doing great! Thank you for asking. :)`);
   });
 
+//mindfulness tips
+  const mindfulnessTips = [
+    "Take a few deep breaths to think about how grateful you are to be living in this moment.",
+    "Focus on the present moment and let go of distractions that prevent you from moving forward.",
+    "Practice gratitude by listing three things you're thankful for.",
+  ];
+  app.message(async ({ message, say }) => {
+    if (message.text.toLowerCase().includes('give me a mindfulness tip')) {
+      const randomTip = mindfulnessTips[Math.floor(Math.random() * mindfulnessTips.length)];
+      await say(`Of course. It is important to maintain healthy and happy thoughts. Keep this in mind: ${randomTip}`);
+    }
+  });
+
 //Response to a knock knock joke
 app.message('knock knock', async ({ message, say }) => {
         await say({
