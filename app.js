@@ -9,14 +9,14 @@ const app = new App({
     socketMode: true, 
 });
 
+//Give a positive quote after a hello message
 app.message('hello', async ({ message, say }) => {
     await say(`Hello, <@${message.user}>! The positivity quote of the day is: Keep your face always toward the sunshine, and shadows will fall behind you.`);
   });
   
-
+//Response to a knock knock joke
 app.event('app_mention', async ({ event, say }) => {
     if (event.text.toLowerCase().includes('knock knock')) {
-        // Respond with a knock-knock joke
         await say({
             blocks: [
                 {
@@ -38,7 +38,7 @@ app.event('app_mention', async ({ event, say }) => {
     }
 });
 
-
+//changing kelvins to fahrenehit, giving weather
 function kelvinToFahrenheit(kelvin) {
     return ((kelvin - 273.15) * 9/5 + 32).toFixed(2);
   }
@@ -46,8 +46,7 @@ function kelvinToFahrenheit(kelvin) {
   app.command('/weather', async ({ command, ack, say }) => {
     await ack();
   
-    // Retrieve weather data from the API
-    const apiKey = process.env.OPENWEATHERMAP_API_KEY; // Read API key from .env
+    const apiKey = process.env.OPENWEATHERMAP_API_KEY; 
     const cityName = command.text;
   
     try {
@@ -56,14 +55,12 @@ function kelvinToFahrenheit(kelvin) {
       );
   
       const weatherData = response.data;
-      // Process the weather data and compose a response message
       const description = weatherData.weather[0].description;
       const temperatureKelvin = weatherData.main.temp;
       const temperatureFahrenheit = kelvinToFahrenheit(temperatureKelvin);
   
       const message = `The current weather in ${cityName} is ${description} with a temperature of ${temperatureFahrenheit}°F. Make sure to wear sunscreen!`;
   
-      // Send the weather information to the Slack channel
       await say(message);
     } catch (error) {
       console.error('Error fetching weather data:', error);
@@ -71,6 +68,21 @@ function kelvinToFahrenheit(kelvin) {
     }
   });
 
+  //giving compliments
+  async function getCompliment() {
+    try {
+      const response = await axios.get('https://www.affirmations.dev/');
+      return response.data.affirmation;
+    } catch (error) {
+      console.error('Error fetching compliment:', error);
+      return 'You are awesome!'; // Default compliment
+    }
+  }
+  
+  app.message('Give me a positive affirmation', async ({ say }) => {
+    const compliment = await getCompliment();
+    await say(compliment);
+  });
 
 
 (async () => {
