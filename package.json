@@ -2,7 +2,7 @@
   "name": "chatifybot",
   "version": "1.0.0",
   "description": "Adobe Career Academy technical project. Still in progress.  A slack app using the Bolt framework and Javascript to perform functionalities.",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "@slack/bolt": "^3.13.3",
     "abort-controller": "^3.0.0",
